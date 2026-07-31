@@ -1,96 +1,109 @@
 const output = document.querySelector("#output");
 
-/* STEP 1: Instead of a constructor function, let's try a JavaScript class called 'Coffee' */
+
+/* Parent Coffee class */
 class Coffee {
-    // variables/attributes
+
+    // Constructor properties
     size;
     isDecaf;
 
-    // constructor
+
     constructor(size, isDecaf) {
         this.size = size;
         this.isDecaf = isDecaf;
     }
 
-    // add a serveIt method
-    serveIt() {
-        // Generate an IMG of the coffee ordered
-        let cup = document.createElement("img"); // <img>
 
-        // Set the src path for the IMG element
-        // <img src="images/coffee-cup.svg">
+    // Creates and displays coffee cup image
+    serveIt() {
+
+        let cup = document.createElement("img");
+
+        // Select cup image depending on caffeine
         if (this.isDecaf) {
-            // Determine caffeine status of the coffee
-            cup.setAttribute("src", "images/coffee-cup-green.svg"); // <img src="images/coffee-cup-green.svg">
-        } else {
-            cup.setAttribute("src", "images/coffee-cup-purple.svg"); // <img src="images/coffee-cup-purple.svg">
+            cup.setAttribute("src", "images/coffee-cup-green.svg");
+        } 
+        else {
+            cup.setAttribute("src", "images/coffee-cup-purple.svg");
         }
 
-        // Set the size of the cup SVG image based on this.size
-        // <img src="images/coffee-cup.svg" height=150>
+
+        // Set cup size
         switch (this.size) {
-            // Size the IMG in terms of its height based on above number from the switch
+
             case "small":
                 cup.setAttribute("height", 100);
                 break;
+
             case "medium":
                 cup.setAttribute("height", 150);
                 break;
+
             case "large":
                 cup.setAttribute("height", 200);
                 break;
+
             default:
                 cup.setAttribute("height", 150);
         }
 
-        // console.log(cup);
-        // Generate a description of the coffee and put it into the IMG title attribute
+
         cup.setAttribute("title", `A ${this.size} coffee.`);
 
-        // Insert the new IMG element into the paragraph
         output.appendChild(cup);
     }
 }
 
-/* STEP 2: Instatiate a coffee based on the above constructor function */
-let priyanshCoffee = new Coffee("medium", true);
-priyanshCoffee.serveIt();
 
-let robertCoffee = new Coffee("large", false);
-robertCoffee.serveIt();
 
-let meganCoffee = new Coffee("small", true);
-meganCoffee.serveIt();
-robertCoffee.serveIt();
-meganCoffee.serveIt();
-meganCoffee.serveIt();
-meganCoffee.serveIt();
-meganCoffee.serveIt();
-meganCoffee.serveIt();
+/* Subclass of Coffee */
+class Mocha extends Coffee {
 
-/* STEP 3: Add a method to the Coffee class called serveIt() */
+    // New properties
+    shots;
+    flavour;
 
-/* STEP 4: Call up the serveIt() method */
 
-/* STEP 5: Define a subclass of the Coffee class */
-class Latte extends Coffee {
-    milkType;
-    constructor(size, isDecaf, milkType) {
+    constructor(size, isDecaf, shots, flavour) {
+
+        // Pass size and isDecaf to Coffee
         super(size, isDecaf);
-        this.milkType = milkType;
+
+        this.shots = shots;
+        this.flavour = flavour;
     }
-    latteDesc() {
-        return `A ${this.size} sized Latte with ${this.milkType} milk.`;
+
+
+    // Custom description method
+    describeDrink() {
+
+        return `A ${this.size} Mocha with ${this.shots} shots and ${this.flavour} syrup.`;
+
     }
+
 }
 
-/* STEP 6: Create a new instance of the Latte object */
-let priyanshLatte = new Latte("small", false, "2%");
 
-/* STEP 7: Call up the latteDesc() method for the above created Latte instance */
 
-/* STEP 8: Create yet another instance of Latte using the console, and try the latteDesc() method from the subclass, as well as the serveIt() method from the parent class */
+/* Create two Mocha objects */
 
-// This page inspired by and adapted from https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Classes_in_JavaScript
+let mocha1 = new Mocha("large", false, 2, "caramel");
 
-// Special thanks to https://openclipart.org/detail/293550/coffee-to-go for the very cool coffee cup SVG
+let mocha2 = new Mocha("medium", true, 1, "vanilla");
+
+
+
+/* Use inherited serveIt() method */
+
+mocha1.serveIt();
+
+mocha2.serveIt();
+
+
+
+/* Display custom descriptions */
+
+output.innerHTML += `<br>${mocha1.describeDrink()}<br>`;
+
+output.innerHTML += `${mocha2.describeDrink()}`;
